@@ -175,8 +175,20 @@ import torch
 def apply_attention_weights_to_values(attention_weights, value):
     return torch.matmul(attention_weights, value)
 
-# Step 22 - scaled_dot_product_attention (not yet solved)
-# TODO: implement
+# Step 22 - scaled_dot_product_attention
+import torch
+
+def scaled_dot_product_attention(query, key, value, mask=None):
+    d_k = query.shape[-1]
+    
+    attention_scores = torch.matmul(query, key.transpose(-1, -2)) / (d_k ** 0.5)
+    if mask is not None:
+        attention_scores = attention_scores.masked_fill(~mask, float("-inf"))
+    
+    attention_weights = torch.nn.functional.softmax(attention_scores, dim=-1)
+    attention_weights = torch.nan_to_num(attention_weights, nan=0.0)
+
+    return torch.matmul(attention_weights, value), attention_weights
 
 # Step 23 - split_last_dim_into_heads (not yet solved)
 # TODO: implement
