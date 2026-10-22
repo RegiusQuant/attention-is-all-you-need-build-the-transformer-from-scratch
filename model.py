@@ -128,8 +128,13 @@ def build_padding_mask(token_ids, pad_id):
     B, L = token_ids.shape
     return (token_ids != pad_id).reshape(B, 1, 1, L)
 
-# Step 15 - build_causal_mask (not yet solved)
-# TODO: implement
+# Step 15 - build_causal_mask
+import torch
+
+def build_causal_mask(seq_len):
+    causal_mask = torch.ones(seq_len, seq_len, dtype=torch.bool)
+    causal_mask = torch.tril(causal_mask)
+    return causal_mask.reshape(1, 1, seq_len, seq_len)
 
 # Step 16 - combine_padding_and_causal_masks (not yet solved)
 # TODO: implement
